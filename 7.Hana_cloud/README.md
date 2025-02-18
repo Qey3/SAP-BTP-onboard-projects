@@ -1,7 +1,6 @@
 # Project with connection to SAP Hana Cloud database
 
-# Concept the same as previous PostgreSQL application, the difference in configuration database service, 
-there is my suggestion how to set up service which helped me:
+## Concept the same as previous PostgreSQL application, the difference in configuration database service, there is my suggestion how to set up service which helped me:
 * First evolve if you have already created your `SAP HANA Cloud` from this material with plan `tools`, remove it:
 [ https://developers.sap.com/tutorials/hana-cloud-mission-trial-2-ft.html ] - with this version you can't connect to Hana
 * You should create `SAP HANA Cloud` with plan `hana` and start database 
@@ -13,6 +12,6 @@ You can set up them in your `HANA Cloud Central`
 * And the last one you should create your database user and set up permission for him, link to the video:
 [ https://www.youtube.com/watch?v=njVZWRGTJAI ] - take password for your `DBADMIN` user from service-creation step 
 
-# Usefully commands:
+## Usefully commands:
 * `mbt build`
 * `cf deploy <path to your .mtar file>`

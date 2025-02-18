@@ -1,1 +1,1 @@
-# Simple application with basic auth for call through `Destination`
+## Simple application with basic auth for call through `Destination`

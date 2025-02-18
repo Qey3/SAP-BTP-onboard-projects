@@ -6,6 +6,6 @@
 * how to develop:
  - [https://help.sap.com/docs/web-ide/sap-web-ide-full-stack/developing-multitarget-applications]
 
-# Usefully commands:
+# Useful commands:
 * `mbt build`
 * `cf deploy <path to your .mtar file>`
