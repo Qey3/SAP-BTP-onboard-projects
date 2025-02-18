@@ -1,5 +1,5 @@
 ## This project has been made step-by-stem from this tutorial:
-- [https://developers.sap.com/tutorials/btp-cf-buildpacks-java-create.html]
+- [Create an Application with SAP Java Buildpack](https://developers.sap.com/tutorials/btp-cf-buildpacks-java-create.html)
 
 ### If you encounter issues with role creation, don’t worry! You can resolve this by modifying your xs-security.json file:
 Add your own `role-collections`, ensuring they include `role-template-references` that reference your role.

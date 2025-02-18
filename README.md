@@ -25,7 +25,7 @@ I've included additional problem-solving descriptions in each project based on c
 - [SSH Services in Cloud Foundry](https://docs.cloudfoundry.org/devguide/deploy-apps/ssh-services.html)
 
 ### Connect to SAP BTP Database with SSH Tunnel:
-- [https://community.sap.com/t5/technology-blogs-by-members/sap-btp-postgresql-database-import-to-pgadmin-with-ssh-tunnel-local-access/ba-p/13574449]
+- [SAP BTP PostgreSQL Database import to pgAdmin with SSH Tunnel (Local Access)](https://community.sap.com/t5/technology-blogs-by-members/sap-btp-postgresql-database-import-to-pgadmin-with-ssh-tunnel-local-access/ba-p/13574449)
 
 ### MTA Documentation:
 - [Deploying a Multi-Target Application on SAP Business Technology Platform](https://developers.sap.com/tutorials/btp-cf-deploy-mta.html)
