@@ -5,6 +5,6 @@
 * [DOCS](https://help.sap.com/docs/application-logging-service)
 
 ### Important Notes
-By default, the logging service does not capture logs produced by certain logging libraries, such as Log4j.
-To enable logging for these libraries using the SAP logging service, follow the configuration guidelines below:
+To enable and configure logging using the SAP logging service, you can use some approach:
+ - [Configure a Java Application for Logs and Traces](https://help.sap.com/docs/btp/sap-business-technology-platform/configure-java-application-for-logs-and-traces)
  - [cf-java-logging-support](https://github.com/SAP/cf-java-logging-support)
