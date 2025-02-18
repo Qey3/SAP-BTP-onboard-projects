@@ -27,5 +27,5 @@ Note: On this step you should already have a database service (PostgreSQL or SAP
 `$XSAPPNAME(application,sap-provisioning,tenant-onboarding`
 
 ### Tutorial how to add multi-tenancy support:
-- [https://developers.sap.com/tutorials/cp-cf-security-xsuaa-multi-tenant.html]
-- [https://spring.io/blog/2022/07/31/how-to-integrate-hibernates-multitenant-feature-with-spring-data-jpa-in-a-spring-boot-application]
+- [Tutorial help you configure services for multitenant app](https://developers.sap.com/tutorials/cp-cf-security-xsuaa-multi-tenant.html) 
+- [How to integrate Hibernates Multitenant feature with Spring Data JPA in a Spring Boot application](https://spring.io/blog/2022/07/31/how-to-integrate-hibernates-multitenant-feature-with-spring-data-jpa-in-a-spring-boot-application)
