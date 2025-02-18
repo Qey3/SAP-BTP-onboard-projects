@@ -3,6 +3,7 @@
   "routes": [
     {
       "source": "^/(.*)$",
+      "target": "$1",
       "destination": "products-destination",
       "csrfProtection": false,
       "authenticationType": "xsuaa"
