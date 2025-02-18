@@ -19,10 +19,13 @@ using a manifest.yaml approach.
 I've included additional problem-solving descriptions in each project based on challenges I encountered along the way.
 
 ## Useful links:
-### Remote debugging on SAP BTP Cloud Foundry
+### Remote debugging on SAP BTP Cloud Foundry:
 - [Debugging Java Web Applications on SAP Business Technology Platform](https://help.sap.com/docs/btp/sap-business-technology-platform/debug-java-web-application-running-on-sapmachine?locale=en-US)
 - https://blogs.sap.com/2019/07/24/remote-debugging-on-cloud-foundry/
 - [SSH Services in Cloud Foundry](https://docs.cloudfoundry.org/devguide/deploy-apps/ssh-services.html)
+
+### Connect to SAP BTP Database with SSH Tunnel:
+- [https://community.sap.com/t5/technology-blogs-by-members/sap-btp-postgresql-database-import-to-pgadmin-with-ssh-tunnel-local-access/ba-p/13574449]
 
 ### MTA Documentation:
 - [Deploying a Multi-Target Application on SAP Business Technology Platform](https://developers.sap.com/tutorials/btp-cf-deploy-mta.html)
@@ -31,7 +34,7 @@ I've included additional problem-solving descriptions in each project based on c
 - [Example of mta file](https://github.com/SAP-samples/cloud-cap-multitenancy/blob/main/mta.yaml)
 - [Example of mta file](https://github.com/SAP-samples/btp-build-resilient-apps/blob/main/mta.yaml)
 
-### Helpful Resources
+### Helpful Resources:
 - [Secure Your Multi-Target Application on BTP](https://github.com/SAP-archive/teched2019-cloud-cf-product-list/blob/teched2019/docs/09_secure/README.md)
 - [Sample Application - teched2019-cloud-cf-product-list](https://github.com/SAP-archive/teched2019-cloud-cf-product-list/tree/teched2019)
 - [SSH Services in Cloud Foundry](https://docs.cloudfoundry.org/devguide/deploy-apps/ssh-services.html)

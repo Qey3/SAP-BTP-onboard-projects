@@ -4,7 +4,3 @@
 
 ## You can obtain database information for setup db-connection from environment:
 * `${vcap.services.<postgre-service-name>.credentials.<property-name>` 
-
-## Useful commands:
-* `mbt build`
-* `cf deploy <path to your .mtar file>`

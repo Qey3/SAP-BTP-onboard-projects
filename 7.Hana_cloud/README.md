@@ -11,7 +11,3 @@ You can set up them in your `HANA Cloud Central`
 * After that you should create `SAP HANA Schemas & HDI Containers` service (not trial version) and choose plan `hdi-shared`.
 * And the last one you should create your database user and set up permission for him, link to the video:
 [ https://www.youtube.com/watch?v=njVZWRGTJAI ] - take password for your `DBADMIN` user from service-creation step 
-
-## Usefully commands:
-* `mbt build`
-* `cf deploy <path to your .mtar file>`
