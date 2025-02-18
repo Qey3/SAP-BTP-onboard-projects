@@ -15,7 +15,7 @@ with XSUAA and App Router services and deploy it to SAP BTP.
 using a manifest.yaml approach.
 - `9.MTA_Multitenant` – Similar to the previous project but applies MTA concepts to configure the application in a single file.
 
-# If you get stuck at any point, don't hesitate to check the project's README file or folder structure. 
+## If you get stuck at any point, don't hesitate to check the project's README file or folder structure. 
 I've included additional problem-solving descriptions in each project based on challenges I encountered along the way.
 
 ## Useful links:
