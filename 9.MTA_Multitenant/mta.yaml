@@ -1,0 +1,127 @@
+_schema-version: 3.3.0
+ID: multitenant-app
+version: 0.0.1
+
+modules:
+  - name: multitenant-srv
+    type: java
+    path: app
+    provides:
+      - name: multitenant-api
+        properties:
+          multitenant-url: '${default-url}'
+    parameters:
+      memory: 1024M
+      APPLICATION_LOGGING: { "application-logging": "app-log-service" }
+      buildpack: sap_java_buildpack
+      enable-ssh: true
+    requires:
+      - name: app-log-service
+      - name: multitenant-xsuaa
+      - name: postgre-db
+      - name: multitenant_saas_registry
+    properties:
+      JBP_CONFIG_JAVA_OPTS: "[java_opts: '-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n']"
+      JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jdk.SAPMachineJDK']"
+      JBP_CONFIG_SAP_MACHINE_JDK: '{ version: 21.+, default_debug_agent_active: true, use_offline_repository: false }'
+      JBP_CONFIG_DEBUG: '[enabled: true, port: 8000]'
+      SAP_JWT_TRUST_ACL: '[{"clientid" : "*", "identityzone" : "*"}]'
+      SPRING_PROFILES_ACTIVE: cloud
+    build-parameters:
+      builder: custom
+      commands:
+        - mvn clean package -DskipTests=true
+      build-result: target/*-exec.jar
+
+  - name: web-multitenant
+    type: approuter.nodejs
+    path: web
+    provides:
+      - name: multitenant-router
+        properties:
+          url: ${default-url}
+          application: ${app-name}
+    requires:
+      - name: app-log-service
+      - name: multitenant-api
+        group: destinations
+        properties:
+          name: multitenant-api
+          url: ~{multitenant-url}
+          forwardAuthToken: true
+      - name: multitenant-xsuaa
+    parameters:
+      memory: 256M
+      keep-existing-routes: true
+      disk-quota: 256M
+    properties:
+      TENANT_HOST_PATTERN: '^(.*)-${app-name}.${default-domain}'
+
+resources:
+  - name: app-log-service
+    type: application-logs
+    parameters:
+      service-plan: lite
+      logLevel: DEBUG
+      retentionPeriod: 30
+
+  - name: multitenant-xsuaa
+    type: org.cloudfoundry.managed-service
+    properties:
+      XSAPPNAME: ${xsuaa-app}
+    requires:
+      - name: multitenant-router
+    parameters:
+      service: xsuaa
+      shared: true
+      service-plan: application
+      xsuaa-app: ${space}-~{multitenant-router/application}
+      config:
+        xsappname: ${xsuaa-app}
+        tenant-mode: shared
+        scopes:
+          - name: "$XSAPPNAME.Display"
+            description: Display content
+          - name: "$XSAPPNAME.Callback"
+            description: With this scope set, the callbacks for tenant onboarding, offboarding and getDependencies can be called.
+            grant-as-authority-to-apps:
+              - "$XSAPPNAME(application,sap-provisioning,tenant-onboarding)"
+        role-templates:
+          - name: Viewer
+            description: View all
+            scope-references:
+              - "$XSAPPNAME.Display"
+        "role-collections": [
+          {
+            "name": "multitenant_role_collection",
+            "description": "User Viewer Role Collection",
+            "role-template-references": [
+              "$XSAPPNAME.Viewer"
+            ]
+          }
+        ]
+        oauth2-configuration:
+          token-validity: 86400
+          refresh-token-validity: 2592000
+          redirect-uris:
+            - "http*://*.${default-domain}/**"
+
+  - name: postgre-db
+    type: org.cloudfoundry.existing-service
+
+  - name: multitenant_saas_registry
+    type: org.cloudfoundry.managed-service
+    requires:
+      - name: multitenant-xsuaa
+      - name: multitenant-srv
+    parameters:
+      service: saas-registry
+      service-plan: application
+      config:
+        xsappname: ~{multitenant-xsuaa/XSAPPNAME}
+        appName: multitenant-router
+        appUrls:
+          onSubscription: https://${org}-${space}-multitenant-srv.cfapps.us10-001.hana.ondemand.com/callback/v1/tenants/{tenantId}
+          onSubscriptionAsync: false
+          onUnSubscriptionAsync: false
+        displayName: My Multitenant App

@@ -1,0 +1,43 @@
+applications:
+  - name: my-app
+    path: ./target/my-tenant-app-1.0-SNAPSHOT.jar
+    instances: 1
+    memory: 1024M
+    enable-ssh: true
+    routes:
+      - route: my-app-25.cfapps.us10-001.hana.ondemand.com
+    buildpacks:
+      - sap_java_buildpack_jakarta
+    env:
+      TARGET_RUNTIME: tomcat
+      JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jdk.SAPMachineJDK']"
+      JBP_CONFIG_SAP_MACHINE_JDK: "{ version: 21.+ }"
+      SPRING_PROFILES_ACTIVE: cloud
+      JBP_CONFIG_DEBUG: '[enabled: true, port: 8000]'
+      JBP_CONFIG_JAVA_OPTS: "[java_opts: '-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n']"
+    services:
+      - xsuaa-service-tutorial
+      - postgre-db
+      - app-log-service
+      - saas-registry-tutorial
+
+  # Application Router
+  - name: approuter
+    routes:
+      - route: approuter-product-25.cfapps.us10-001.hana.ondemand.com
+    path: approuter
+    buildpacks:
+      - nodejs_buildpack
+    memory: 256M
+    services:
+      - xsuaa-service-tutorial
+    env:
+      destinations: >
+        [
+          {
+            "name":"products-destination",
+            "url":"https://my-app-25.cfapps.us10-001.hana.ondemand.com",
+            "forwardAuthToken": true
+          }
+        ]
+      TENANT_HOST_PATTERN: "^(.*)-approuter-product-25.cfapps.us10-001.hana.ondemand.com"

@@ -1,0 +1,99 @@
+_schema-version: 3.3.0
+ID: hana_app-app
+version: 0.0.1
+
+modules:
+  - name: hana_app
+    type: java
+    path: ./
+    provides:
+      - name: hana_srv
+        properties:
+          hana-srv-url: '${default-url}'
+    parameters:
+      memory: 1024M
+      APPLICATION_LOGGING: { "application-logging": "app-log-service" }
+      buildpack: sap_java_buildpack
+    requires:
+      - name: app-log-service
+      - name: mtaxsuaa
+      - name: sap_hdi_containers
+    properties:
+      buildpack: sap_java_buildpack
+      TARGET_RUNTIME: tomcat
+      JBP_CONFIG_JAVA_OPTS: "[java_opts: '-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n']"
+      JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jdk.SAPMachineJDK']"
+      JBP_CONFIG_SAP_MACHINE_JDK: "[version: 21.+, default_debug_agent_active: true]"
+      JBP_CONFIG_DEBUG: '[enabled: true, port: 8000]'
+      SPRING_PROFILES_ACTIVE: cloud
+    build-parameters:
+      builder: custom
+      commands:
+        - mvn clean package -DskipTests=true
+      build-result: target/*-SNAPSHOT.jar
+
+  - name: web-hana
+    type: nodejs
+    path: web
+    provides:
+      - name: web-destination
+        properties:
+          url: ${default-url}
+          application: ${app-name}
+    requires:
+      - name: app-log-service
+      - name: hana_srv
+        group: destinations
+        properties:
+          name: hana_srv
+          url: ~{hana-srv-url}
+          forwardAuthToken: true
+      - name: mtaxsuaa
+    parameters:
+      memory: 512M
+      APPLICATION_LOGGING: { "application-logging": "app-log-service" }
+
+resources:
+  - name: app-log-service
+    type: application-logs
+    parameters:
+      service-plan: lite
+      logLevel: DEBUG
+      retentionPeriod: 30
+
+  - name: mtaxsuaa
+    type: org.cloudfoundry.managed-service
+    properties:
+      XSAPPNAME: ${xsuaa-app}
+    requires:
+      - name: web-destination
+    parameters:
+      service: xsuaa
+      service-plan: application
+      xsuaa-app: ${space}-~{web-destination/application}
+      config:
+        xsappname: ${xsuaa-app}
+        tenant-mode: dedicated
+        scopes:
+          - name: "$XSAPPNAME.Display"
+            description: Display content
+        role-templates:
+          - name: Viewer
+            description: View all
+            scope-references:
+              - "$XSAPPNAME.Display"
+        "role-collections": [
+          {
+            "name": "MyJavaAppRC",
+            "description": "User Viewer Role Collection",
+            "role-template-references": [
+              "$XSAPPNAME.Viewer"
+            ]
+          }
+        ]
+        oauth2-configuration:
+          redirect-uris:
+            - "http*://*.${default-domain}/**"
+
+  - name: sap_hdi_containers
+    type: org.cloudfoundry.existing-service

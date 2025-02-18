@@ -1,0 +1,97 @@
+_schema-version: 3.3.0
+ID: hello-mta-app
+version: 0.0.1
+
+modules:
+  - name: mta-srv
+    type: java
+    path: ./
+    provides:
+      - name: mta-app
+        properties:
+          mta-url: '${default-url}'
+    parameters:
+      memory: 512M
+      APPLICATION_LOGGING: { "application-logging": "app-log-service" }
+      enable-ssh: true
+    requires:
+      - name: app-log-service
+      - name: mtaxsuaa
+    properties:
+      TARGET_RUNTIME: tomcat
+      JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jdk.SAPMachineJDK']"
+      JBP_CONFIG_SAP_MACHINE_JDK: "{ version: 21.+ }"
+      XS_APP_LOG_LEVEL: debug
+    build-parameters:
+      builder: custom
+      commands:
+        - mvn clean package -DskipTests=true
+      build-result: target/*-SNAPSHOT.jar
+
+  - name: web-mta
+    type: nodejs
+    path: web
+    provides:
+      - name: web
+        properties:
+          url: ${default-url}
+          application: ${app-name}
+    requires:
+      - name: app-log-service
+      - name: mta-app
+        group: destinations
+        properties:
+          name: helloworld
+          url: ~{mta-url}
+          forwardAuthToken: true
+      - name: mtaxsuaa
+    parameters:
+      memory: 256M
+      APPLICATION_LOGGING: { "application-logging": "app-log-service" }
+
+resources:
+  - name: app-log-service
+    type: org.cloudfoundry.existing-service
+    parameters:
+      logLevel: DEBUG
+      retentionPeriod: 30
+
+  - name: mtaxsuaa
+    type: org.cloudfoundry.managed-service
+    properties:
+      XSAPPNAME: ${xsuaa-app}
+    requires:
+      - name: web
+    parameters:
+      service: xsuaa
+      service-plan: application
+      xsuaa-app: ${space}-~{web/application}
+      config:
+        xsappname: ${xsuaa-app}
+        tenant-mode: dedicated
+        scopes:
+          - name: "$XSAPPNAME.Display"
+            description: Display content
+        role-templates:
+          - name: Viewer
+            description: View all
+            scope-references:
+              - "$XSAPPNAME.Display"
+        "role-collections": [
+          {
+            "name": "MyJavaAppRC",
+            "description": "User Viewer Role Collection",
+            "role-template-references": [
+              "$XSAPPNAME.Viewer"
+            ]
+          }
+        ]
+        oauth2-configuration:
+          redirect-uris:
+            - "http*://*.${default-domain}/**"
+
+  - name: destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite

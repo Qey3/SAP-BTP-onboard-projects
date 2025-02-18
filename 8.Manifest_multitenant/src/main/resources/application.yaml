@@ -1,0 +1,60 @@
+---
+spring:
+  config.activate.on-profile: local,default
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+    properties:
+      hibernate:
+        multiTenancy: SCHEMA
+        tenant_identifier_resolver: com.example.java_tutorial.configuration.CurrentTenantIdentifierResolverImpl
+        multi_tenant_connection_provider: com.example.java_tutorial.configuration.SchemaPerTenantConnectionProvider
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:mydb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;QUERY_CACHE_SIZE=0
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+---
+custom:
+  datasource:
+    hostname: ${vcap.services.postgre-db.credentials.hostname}
+    port: ${vcap.services.postgre-db.credentials.port}
+    dbname: ${vcap.services.postgre-db.credentials.dbname}
+
+spring:
+  config.activate.on-profile: cloud
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: ${vcap.services.postgre-db.credentials.username}
+    password: ${vcap.services.postgre-db.credentials.password}
+    url: jdbc:postgresql://${custom.datasource.hostname}:${custom.datasource.port}/${custom.datasource.dbname}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        multiTenancy: SCHEMA
+        tenant_identifier_resolver: com.example.java_tutorial.configuration.CurrentTenantIdentifierResolverImpl
+        multi_tenant_connection_provider: com.example.java_tutorial.configuration.SchemaPerTenantConnectionProvider
+  liquibase:
+    change-log: liquibase/hana.changelog-master.yml
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+    com:
+      sap: DEBUG
+sap:
+  security:
+    services: xsuaa

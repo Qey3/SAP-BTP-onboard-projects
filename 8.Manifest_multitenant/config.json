@@ -1,0 +1,11 @@
+{
+  "xsappname":"xsuaa-service-tutorial",
+  "appUrls": {
+    "onSubscription" : "https://my-app-25.cfapps.us10-001.hana.ondemand.com/callback/v1/tenants/{tenantId}",
+    "onSubscriptionAsync" : false,
+    "onUnSubscriptionAsync" : false
+  },
+  "displayName" : "Product List MTA",
+  "description" : "Product list MTA sample application",
+  "category" : "Custom SaaS Applications"
+}

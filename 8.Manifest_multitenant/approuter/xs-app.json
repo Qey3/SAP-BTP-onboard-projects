@@ -1,0 +1,11 @@
+{
+  "authenticationMethod": "route",
+  "routes": [
+    {
+      "source": "^/(.*)$",
+      "destination": "products-destination",
+      "csrfProtection": false,
+      "authenticationType": "xsuaa"
+    }
+  ]
+}

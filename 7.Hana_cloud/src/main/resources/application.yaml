@@ -1,0 +1,41 @@
+---
+spring:
+  config.activate.on-profile: local
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+  h2:
+    console:
+      enabled: true
+
+---
+custom:
+  datasource:
+    hostname: ${vcap.services.sap_hdi_containers.credentials.host}
+    port: ${vcap.services.sap_hdi_containers.credentials.port}
+    dbname: ${vcap.services.sap_hdi_containers.credentials.database_id}
+spring:
+  config.activate.on-profile: cloud
+  datasource:
+    driver-class-name: com.sap.db.jdbc.Driver
+    # There should be your own-created User with all DB Permissions
+    username: HDI_GROUP_ADMIN
+    # There should be your own-created User password
+    password: Admin123
+    url: ${vcap.services.sap_hdi_containers.credentials.url}
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.HANAColumnStoreDialect
+    show-sql: true
+  liquibase:
+    change-log: liquibase/hana.changelog-master.yml

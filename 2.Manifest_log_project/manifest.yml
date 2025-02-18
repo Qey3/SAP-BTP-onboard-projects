@@ -1,0 +1,33 @@
+---
+applications:
+  - name: helloworld-log
+    routes:
+      - route: helloworld-log.cfapps.us10-001.hana.ondemand.com
+    path: ./target/java-logging-0.0.1-SNAPSHOT.jar
+    memory: 512M
+    buildpacks:
+      - sap_java_buildpack_jakarta
+    env:
+      TARGET_RUNTIME: tomcat
+      JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jdk.SAPMachineJDK']"
+      JBP_CONFIG_SAP_MACHINE_JDK : "{ version: 21.+ }"
+    services:
+      - javauaa
+      - app-log-service
+
+  - name: web-log
+    routes:
+      - route: web-log.cfapps.us10-001.hana.ondemand.com
+    path: web
+    memory: 256M
+    env:
+      destinations: >
+        [
+          {
+            "name":"helloworld",
+            "url":"https://helloworld-log.cfapps.us10-001.hana.ondemand.com/",
+            "forwardAuthToken": true
+          }
+        ]
+    services:
+      - javauaa
