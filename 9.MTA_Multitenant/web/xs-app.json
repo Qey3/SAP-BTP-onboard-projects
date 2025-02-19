@@ -3,6 +3,7 @@
   "routes": [
     {
       "source": "^/(.*)$",
+      "target": "$1",
       "destination": "multitenant-api",
       "csrfProtection": false,
       "authenticationType": "xsuaa"
