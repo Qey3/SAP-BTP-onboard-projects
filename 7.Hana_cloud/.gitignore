@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 default-env.json
 default-services.json
+*.mtar
 
 ### STS ###
 .apt_generated
