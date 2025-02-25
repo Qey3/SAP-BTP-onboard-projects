@@ -2,7 +2,7 @@
 
 ## Concept the same as previous PostgreSQL application, the difference in configuration database service, there is my suggestion how to set up service which helped me:
 * First evolve if you have already created your `SAP HANA Cloud` from this manual with plan `tools`, remove it:
-[Start Using SAP HANA Cloud Free Tier in SAP BTP Cockpit](https://developers.sap.com/tutorials/hana-cloud-mission-trial-2-ft.html) - with this version you can't connect to Hana
+[Start Using SAP HANA Cloud Free Tier in SAP BTP Cockpit](https://developers.sap.com/tutorials/hana-cloud-mission-trial-2-ft.html) - with this version, your `HDI Container` cannot find the HANA database to connect to.
 * You should create `SAP HANA Cloud` with plan `hana` and start database 
 (IMPORTANT: remember your `systempassword` which one you set up in configuration during service creation)
 * Also, I had difficulties with connection, so for you, it can be necessary to `allow all IP adresses` , 
