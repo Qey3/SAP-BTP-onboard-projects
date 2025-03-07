@@ -13,3 +13,5 @@ and add your e-mail in 'User' list.
  - npm init [init approuter]
  - npm install @sap/approuter --save
  - cf push
+
+### [Using Postman for API Testing with XSUAA](https://community.sap.com/t5/technology-blogs-by-sap/using-postman-for-api-testing-with-xsuaa/ba-p/13442516)
