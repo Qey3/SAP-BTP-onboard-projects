@@ -15,3 +15,5 @@ and add your e-mail in 'User' list.
  - cf push
 
 ### [Using Postman for API Testing with XSUAA](https://community.sap.com/t5/technology-blogs-by-sap/using-postman-for-api-testing-with-xsuaa/ba-p/13442516)
+ - When run your application insert [VCAP_SERVICES in the IntelliJ Idea](https://leverxeu.atlassian.net/wiki/spaces/JAVA/pages/4908711958/How+to+find+VCAP_SERVICES+of+deployed+application#VCAP_SERVICES-in-the-IntelliJ-Idea)
+ - Another example how to [Run Node.js Applications with Authentication Locally - SAP BTP Security](https://community.sap.com/t5/technology-blogs-by-sap/run-node-js-applications-with-authentication-locally-sap-btp-security/ba-p/13540122)

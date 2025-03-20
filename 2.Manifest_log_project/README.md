@@ -3,6 +3,7 @@
 ### SAP Application Logging Service - retiring in July 2025
 * [SAP Discovery Center](https://discovery-center.cloud.sap/serviceCatalog/application-logging-service?region=all)
 * [DOCS](https://help.sap.com/docs/application-logging-service)
+* [SAP Logging](https://sap.github.io/cloud-sdk/docs/java/guides/logging-overview#logging-configuration)
 
 ### Important Notes
 To enable and configure logging using the SAP logging service, you can use some approach:

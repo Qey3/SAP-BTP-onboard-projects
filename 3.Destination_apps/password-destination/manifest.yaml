@@ -1,7 +1,8 @@
 ---
 applications:
   - name: password-destination
-    random-route: true
+    routes:
+      - route: password-destination.cfapps.us10-001.hana.ondemand.com
     path: ./target/password-destination-0.0.1-SNAPSHOT.jar
     memory: 512M
     buildpacks:
@@ -12,3 +13,4 @@ applications:
       JBP_CONFIG_SAP_MACHINE_JDK : "{ version: 21.+ }"
     services:
       - destination-service
+      - app-log-service
