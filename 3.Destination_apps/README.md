@@ -7,3 +7,6 @@
 ### It may be helpful to set up `correlation id` propagation between microservices:
 1. [How to make 2 microservices log one error with the same correlation ID](https://leverxeu.atlassian.net/wiki/x/AQDsQAE)
 2. One approach that worked for me was using Logback for logging and configuring the log output format to JSON in the Logback configuration.
+
+### Local testing
+ - You can [running an application locally](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/running-locally)
